@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Biblioteca Personal | UTLA</title>
+    <style>
+        :root {
+            --primary: #800020; /* Borgoña institucional */
+            --primary-dark: #5c0017;
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --white: #ffffff;
+        }
+        body {
+            font-family: 'Calibri', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        th {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+        .btn-delete {
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto;
+        }
+        .btn-delete:hover {
+            background-color: #b91c1c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Gestor de Biblioteca Personal</h1>
+    
+    <div class="form-group">
+        <label for="titulo">Título del Libro:</label>
+        <input type="text" id="titulo" placeholder="Ej. Ingeniería de Software">
+    </div>
+    <div class="form-group">
+        <label for="autor">Autor:</label>
+        <input type="text" id="autor" placeholder="Ej. Roger Pressman">
+    </div>
+    <div class="form-group">
+        <label for="genero">Género / Categoría:</label>
+        <input type="text" id="genero" placeholder="Ej. Académico / Sistemas">
+    </div>
+    <button onclick="agregarLibro()">Registrar Libro</button>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Género</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tablaLibros"></tbody>
+    </table>
+</div>
+
+<script>
+    let libros = JSON.parse(localStorage.getItem('libros')) || [];
+
+    function guardarYListar() {
+        localStorage.setItem('libros', JSON.stringify(libros));
+        mostrarLibros();
+    }
+
+    function agregarLibro() {
+        const titulo = document.getElementById('titulo').value.trim();
+        const autor = document.getElementById('autor').value.trim();
+        const genero = document.getElementById('genero').value.trim();
+
+        if (!titulo || !autor || !genero) {
+            alert('Por favor, completa todos los campos.');
+            return;
+        }
+
+        libros.push({ titulo, autor, genero });
+        document.getElementById('titulo').value = '';
+        document.getElementById('autor').value = '';
+        document.getElementById('genero').value = '';
+        
+        guardarYListar();
+    }
+
+    function eliminarLibro(index) {
+        libros.splice(index, 1);
+        guardarYListar();
+    }
+
+    function mostrarLibros() {
+        const tbody = document.getElementById('tablaLibros');
+        tbody.innerHTML = '';
+
+        libros.forEach((libro, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${libro.titulo}</td>
+                <td>${libro.autor}</td>
+                <td>${libro.genero}</td>
+                <td><button class="btn-delete" onclick="eliminarLibro(${index})">Eliminar</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    mostrarLibros();
+</script>
+
+</body>
+</html>
