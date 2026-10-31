@@ -1,5 +1,4 @@
 ﻿# Gestor de Biblioteca Personal
-# Gestor de Biblioteca Personal
 
 Aplicación web desarrollada como módulo práctico para la asignatura **Herramientas Avanzadas para el Desarrollo de Aplicaciones (102HAD1)** de la UTLA, utilizando un asistente de Inteligencia Artificial como apoyo de programación.
 
